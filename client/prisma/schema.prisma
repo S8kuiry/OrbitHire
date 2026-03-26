@@ -1,0 +1,101 @@
+// OrbitHire Database Schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  FRESHER
+  RECRUITER
+}
+
+enum Category {
+  SOFTWARE
+  MARKETING
+  DESIGN
+  DATA_AI
+  FINANCE
+  HR
+  OTHER
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id             String        @id @default(cuid())
+  email          String        @unique
+  name           String?
+  avatar         String?
+  role           Role?
+  createdAt      DateTime      @default(now())
+
+  postedJobs     Job[]         @relation("RecruiterJobs")
+  applications   Application[] @relation("FresherApplications")
+  notifications  Notification[]
+}
+
+model Job {
+  id           String      @id @default(cuid())
+  title        String
+  description  String
+  requirements String
+  category     Category
+  salaryRange  String
+  isActive     Boolean     @default(true)
+  expiresAt    DateTime
+  createdAt    DateTime    @default(now())
+
+  recruiter    User          @relation("RecruiterJobs", fields: [recruiterId], references: [id])
+  recruiterId  String
+
+  applications Application[]
+}
+
+model Application {
+  id          String            @id @default(cuid())
+  cvUrl       String
+  orbitScore  Float?
+  status      ApplicationStatus @default(PENDING)
+  aiFeedback  String?
+  appliedAt   DateTime          @default(now())
+
+  job         Job    @relation(fields: [jobId], references: [id])
+  jobId       String
+
+  fresher     User   @relation("FresherApplications", fields: [fresherId], references: [id])
+  fresherId   String
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model FederatedUpdate {
+  id               String   @id @default(cuid())
+  jobCategory      Category
+  weightDelta      Json
+  contributorCount Int      @default(1)
+  createdAt        DateTime @default(now())
+}
+model GlobalWeights {
+  id          String   @id @default(cuid())
+  jobCategory String   @unique
+  threshold   Float
+  sampleCount Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
