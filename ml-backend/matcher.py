@@ -1,14 +1,19 @@
- # we map it to 0-100from sentence_transformers import SentenceTransformer
-from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 
 # Load model once when server starts
 # all-MiniLM-L6-v2 is fast, lightweight and very accurate
-print("Loading sentence transformer model...")
-model = SentenceTransformer("all-MiniLM-L6-v2")
-print("Model loaded ✅")
+_model = None
+
+def get_model():
+    global _model
+    if _model is None:
+        from sentence_transformers import SentenceTransformer
+        print("Loading sentence transformer model...")
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
+        print("Model loaded ✅")
+    return _model
 
 def compute_orbit_score(cv_text: str, jd_text: str, job_category: str) -> float:
     """
@@ -23,7 +28,8 @@ def compute_orbit_score(cv_text: str, jd_text: str, job_category: str) -> float:
        - Returns value between -1 and 1
     3. Convert to 0-100 score
     """
-    
+    model = get_model()
+
     # Step 1 — Encode both texts into vectors
     embeddings = model.encode([cv_text, jd_text])
     

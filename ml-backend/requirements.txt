@@ -6,7 +6,5 @@ numpy
 python-dotenv
 httpx
 pdfplumber
-psycopg2-binary
-prisma
-pdfplumber
 python-multipart
+psycopg2-binary
