@@ -10,6 +10,17 @@ import {
 } from "lucide-react"
 import JobPostModal from "./JobPostModal"
 
+const CATEGORIES = [
+  { label: "All", value: "ALL" },
+  { label: "Software", value: "SOFTWARE" },
+  { label: "Marketing", value: "MARKETING" },
+  { label: "Design", value: "DESIGN" },
+  { label: "Data / AI", value: "DATA_AI" },
+  { label: "Finance", value: "FINANCE" },
+  { label: "HR", value: "HR" },
+  { label: "Other", value: "OTHER" },
+]
+
 type Job = {
   id: string
   title: string
@@ -19,6 +30,7 @@ type Job = {
   isActive: boolean
   createdAt: Date
   _count: { applications: number }
+  pendingCount?: number // Add this field
 }
 
 type Props = {
@@ -48,7 +60,13 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
   const [jobs, setJobs] = useState<Job[]>(initialJobs)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const router = useRouter()
-  const [openModal,setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [activeCategory, setActiveCategory] = useState("ALL")
+
+  const filteredJobs = activeCategory === "ALL" 
+    ? jobs 
+    : jobs.filter(job => job.category === activeCategory)
+
 
   const totalApplications = jobs.reduce((sum, job) => sum + job._count.applications, 0)
   const activeJobs = jobs.filter(j => j.isActive).length
@@ -81,7 +99,7 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
           </p>
         </div>
         <span
-        onClick={()=>setOpenModal(true)}
+          onClick={() => setOpenModal(true)}
           className="cursor-pointer flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600/70 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90       u"
         >
           <PlusCircle size={16} />
@@ -113,14 +131,34 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
 
       {/* Jobs list */}
       <div>
-        <h2 className="text-lg font-semibold mb-4">Your Posted Jobs</h2>
+        <div className="flex items-start justify-start gap-6 pt-2 pb-6">
+                  <h2 className="text-xl font-semibold mb-4">Your Posted Jobs</h2>
 
-        {jobs.length === 0 ? (
+
+
+          {/* Category chips */}
+            <div className="flex z-10 flex-wrap gap-2">
+                {CATEGORIES.map((cat) => (
+                    <button
+                        key={cat.value}
+                        onClick={() => {
+                            setActiveCategory(cat.value)
+                        }} className={activeCategory === cat.value ? "rounded-full px-4 py-1.5 text-sm font-medium cursor-pointer bg-purple-600 text-white shadow-[0_0_12px_rgba(147,51,234,0.4)]"
+                            : "rounded-full px-4 py-1.5 text-sm font-medium cursor-pointer border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                        }
+                    >
+                        {cat.label}
+                    </button>
+                ))}
+            </div>
+        </div>
+
+        {filteredJobs.length === 0 ? (
           <div className="flex h-64 flex-col items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900/50 text-center gap-3">
             <Briefcase size={40} className="text-zinc-600" />
             <p className="text-zinc-400 font-medium">No jobs posted yet</p>
             <span
-            onClick={()=>setOpenModal(true)}
+              onClick={() => setOpenModal(true)}
               className="cursor-pointer flex items-center gap-2 rounded-lg border border-purple-500/30 bg-purple-600/20 px-5 py-2 text-xs text-purple-400 hover:bg-purple-600/30 transition"
             >
               Post your first job
@@ -129,7 +167,7 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
           </div>
         ) : (
           <div className="space-y-4">
-            {jobs.map((job) => (
+            {filteredJobs.map((job) => (
               <div
                 key={job.id}
                 className="rounded-lg border border-zinc-800 bg-zinc-900/30 p-6 transition-all hover:border-zinc-700"
@@ -163,10 +201,17 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
                   <div className="flex items-center gap-2 shrink-0">
                     <Link
                       href={`/dashboard/recruiter/jobs/${job.id}`}
-                      className="flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-white"
+                      className="relative flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-white"
                     >
                       <Eye size={14} />
                       View
+
+                      {/* Notification Badge: Only shows if there are pending applications */}
+                      {job.pendingCount && job.pendingCount > 0 ? (
+                        <span className="absolute -top-2 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-lg ring-2 ring-zinc-950 animate-bounce">
+                          {job.pendingCount}
+                        </span>
+                      ) : null}
                     </Link>
                     <button
                       onClick={() => handleDelete(job.id)}
@@ -186,13 +231,13 @@ export default function RecruiterDashboardClient({ recruiterName, initialJobs }:
           </div>
         )}
       </div>
-      {openModal && <JobPostModal 
-      onClose={()=>setOpenModal(false)}
-      onJobPosted={(newJob)=>{
-        setJobs(prev => [newJob,...prev])
-        setOpenModal(false)
+      {openModal && <JobPostModal
+        onClose={() => setOpenModal(false)}
+        onJobPosted={(newJob) => {
+          setJobs(prev => [newJob, ...prev])
+          setOpenModal(false)
 
-      }}
+        }}
       />}
     </div>
   )
@@ -211,7 +256,7 @@ function StatCard({ label, value, icon, color }: {
   }
 
   return (
-    <div className={`rounded-lg border p-5 ${borderColors[color]}`}>
+    <div className={`rounded-lg border p-4 ${borderColors[color]}`}>
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
           {label}

@@ -1,8 +1,11 @@
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import { Bell, CheckCheck } from "lucide-react"
+import { Bell, CheckCheck, Trash2 } from "lucide-react"
 import NotificationItem from "@/components/NotificationItem"
+import { revalidatePath } from "next/cache"
+import toast from "react-hot-toast"
+import ClearAllButton from "@/components/ClearAllButton"
 
 export default async function NotificationsPage() {
   const { userId } = await auth()
@@ -29,6 +32,9 @@ export default async function NotificationsPage() {
     return `${days}d ago`
   }
 
+
+  
+  
   return (
     <div className="p-6 text-white">
       <div className="mb-6 flex items-center justify-between">
@@ -37,10 +43,7 @@ export default async function NotificationsPage() {
           <p className="text-zinc-500 text-sm mt-1">Stay updated on your applications</p>
         </div>
         {notifications.length > 0 && (
-          <div className="flex items-center gap-1 text-xs text-zinc-500">
-            <CheckCheck size={14} />
-            All caught up
-          </div>
+          <ClearAllButton />
         )}
       </div>
 

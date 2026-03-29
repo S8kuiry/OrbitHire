@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
-    ArrowLeft, Briefcase, IndianRupee, Clock,
+    ArrowLeft, IndianRupee, Clock,
     Users, CheckCircle, XCircle, FileText,
-    Loader2, Edit2, Star,
+    Loader2,
     PlusCircle,
-    MessageCircleCodeIcon,
-    MessageSquareDot
+    MessageSquareDot,
+    Star
 } from "lucide-react"
 import Link from "next/link"
 import JobEditModal from "./JobEditModal"
@@ -20,6 +20,7 @@ type Application = {
     status: string
     aiFeedback: string | null
     appliedAt: Date
+    fresherId: string          // ← ADDED: needed to start a conversation
     fresher: {
         name: string | null
         email: string
@@ -64,7 +65,7 @@ export default function JobDetailClient({ job }: { job: Job }) {
     const [applications, setApplications] = useState<Application[]>(job.applications)
     const [processingId, setProcessingId] = useState<string | null>(null)
     const [activeTab, setActiveTab] = useState<"details" | "applicants">("applicants")
-    const [openModal,setOpenModal] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
 
     async function handleDecision(applicationId: string, decision: "ACCEPTED" | "REJECTED") {
         setProcessingId(applicationId)
@@ -72,7 +73,12 @@ export default function JobDetailClient({ job }: { job: Job }) {
             const res = await fetch(`/api/applications/${applicationId}/decide`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ decision, jobTitle: job.title, jobDescription: job.description, jobRequirements: job.requirements }),
+                body: JSON.stringify({
+                    decision,
+                    jobTitle: job.title,
+                    jobDescription: job.description,
+                    jobRequirements: job.requirements,
+                }),
             })
             const data = await res.json()
             if (res.ok) {
@@ -91,17 +97,25 @@ export default function JobDetailClient({ job }: { job: Job }) {
         }
     }
 
+    // ← FIX: defined here in parent so it can use router, passed down as prop
+    async function startConversation(fresherId: string, jobId: string) {
+        const res = await fetch("/api/conversations", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fresherId, jobId }),
+        })
+        const conv = await res.json()
+        router.push(`/dashboard/recruiter/messages/${conv.id}`)
+    }
+
     const pending = applications.filter(a => a.status === "PENDING")
     const decided = applications.filter(a => a.status !== "PENDING")
-    useEffect(()=>{
-
-    },[openModal])
 
     return (
         <div className="p-6 text-white space-y-6">
 
-            {/* -------------- job Edit Modal ------------ */}
-            {openModal && <JobEditModal job={job} onClose={()=>setOpenModal(false)} />}
+            {/* Job Edit Modal */}
+            {openModal && <JobEditModal job={job} onClose={() => setOpenModal(false)} />}
 
             {/* Back button */}
             <Link
@@ -116,21 +130,18 @@ export default function JobDetailClient({ job }: { job: Job }) {
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4">
                 <div className="relative flex items-start justify-between gap-4 flex-wrap">
 
-                    {/*------ Edit Job ------------ */}
+                    {/* Edit Job button */}
                     <div className="absolute top-0 right-0">
                         <span
-                            onClick={()=>setOpenModal(true)}
-                            className=" text-xs cursor-pointer flex items-center gap-2 rounded-sm bg-gradient-to-r from-purple-600/70 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90       u"
+                            onClick={() => setOpenModal(true)}
+                            className="text-xs cursor-pointer flex items-center gap-2 rounded-sm bg-gradient-to-r from-purple-600/70 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
                         >
                             <PlusCircle size={14} />
                             Edit Job
-                        </span>                        </div>
+                        </span>
+                    </div>
 
-                    <div className="space-y-2 ">
-
-
-
-
+                    <div className="space-y-2">
                         <div className="flex items-center gap-3 flex-wrap">
                             <h1 className="text-2xl font-bold text-white">{job.title}</h1>
                             <span className={`rounded-full border px-3 py-0.5 text-xs font-medium ${categoryColors[job.category] ?? categoryColors.OTHER}`}>
@@ -180,8 +191,6 @@ export default function JobDetailClient({ job }: { job: Job }) {
 
             {/* Tab content */}
             {activeTab === "details" ? (
-
-                // Job details tab
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-6">
                     <div>
                         <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-2">
@@ -202,12 +211,8 @@ export default function JobDetailClient({ job }: { job: Job }) {
                         </div>
                     </div>
                 </div>
-
             ) : (
-
-                // Applicants tab
                 <div className="space-y-4">
-
                     {applications.length === 0 ? (
                         <div className="flex h-48 flex-col items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/30 text-center gap-2">
                             <Users size={36} className="text-zinc-600" />
@@ -216,7 +221,6 @@ export default function JobDetailClient({ job }: { job: Job }) {
                         </div>
                     ) : (
                         <>
-                            {/* Pending first */}
                             {pending.length > 0 && (
                                 <div className="space-y-3">
                                     <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
@@ -228,12 +232,13 @@ export default function JobDetailClient({ job }: { job: Job }) {
                                             application={app}
                                             processingId={processingId}
                                             onDecide={handleDecision}
+                                            jobId={job.id}                 // ← ADDED
+                                            onMessage={startConversation}  // ← ADDED
                                         />
                                     ))}
                                 </div>
                             )}
 
-                            {/* Decided */}
                             {decided.length > 0 && (
                                 <div className="space-y-3">
                                     <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-4">
@@ -245,6 +250,8 @@ export default function JobDetailClient({ job }: { job: Job }) {
                                             application={app}
                                             processingId={processingId}
                                             onDecide={handleDecision}
+                                            jobId={job.id}                 // ← ADDED
+                                            onMessage={startConversation}  // ← ADDED
                                         />
                                     ))}
                                 </div>
@@ -257,10 +264,13 @@ export default function JobDetailClient({ job }: { job: Job }) {
     )
 }
 
-function ApplicantCard({ application, processingId, onDecide }: {
+// ← FIX: added jobId and onMessage to props
+function ApplicantCard({ application, processingId, onDecide, jobId, onMessage }: {
     application: Application
     processingId: string | null
     onDecide: (id: string, decision: "ACCEPTED" | "REJECTED") => void
+    jobId: string
+    onMessage: (fresherId: string, jobId: string) => void
 }) {
     const isProcessing = processingId === application.id
 
@@ -278,7 +288,6 @@ function ApplicantCard({ application, processingId, onDecide }: {
             {/* Top row */}
             <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    {/* Avatar */}
                     {application.fresher.avatar ? (
                         <img
                             src={application.fresher.avatar}
@@ -296,7 +305,6 @@ function ApplicantCard({ application, processingId, onDecide }: {
                     </div>
                 </div>
 
-                {/* Status badge */}
                 <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${status.className}`}>
                     {status.label}
                 </span>
@@ -346,7 +354,7 @@ function ApplicantCard({ application, processingId, onDecide }: {
                         <button
                             onClick={() => onDecide(application.id, "ACCEPTED")}
                             disabled={isProcessing}
-                            className="flex items-center gap-1.5 rounded-lg border border-green-500/20 bg-green-500/10 px-3 py-2 text-xs font-medium text-green-400 transition hover:bg-green-500/20 disabled:opacity-50"
+                            className="cursor-pointer flex items-center gap-1.5 rounded-lg border border-green-500/20 bg-green-500/10 px-3 py-2 text-xs font-medium text-green-400 transition hover:bg-green-500/20 disabled:opacity-50"
                         >
                             {isProcessing ? <Loader2 size={13} className="animate-spin" /> : <CheckCircle size={13} />}
                             Accept
@@ -354,20 +362,21 @@ function ApplicantCard({ application, processingId, onDecide }: {
                         <button
                             onClick={() => onDecide(application.id, "REJECTED")}
                             disabled={isProcessing}
-                            className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-400 transition hover:bg-red-500/20 disabled:opacity-50"
+                            className="cursor-pointer flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-400 transition hover:bg-red-500/20 disabled:opacity-50"
                         >
                             {isProcessing ? <Loader2 size={13} className="animate-spin" /> : <XCircle size={13} />}
                             Reject
                         </button>
                     </>
                 )}
-                 <button
-                            onClick={() => onDecide(application.id, "ACCEPTED")}
-                            disabled={isProcessing}
-                            className="flex items-center gap-1.5 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-400 transition hover:bg-blue-500/20 disabled:opacity-50"
-                        >
-                            {isProcessing ?<MessageSquareDot size={13} /> : <MessageSquareDot size={13} />}
-                            Message
+
+                {/* ← FIX: uses application.fresherId (string) and passed jobId, no disabled tied to isProcessing */}
+                <button
+                    onClick={() => onMessage(application.fresherId, jobId)}
+                    className="cursor-pointer flex items-center gap-1.5 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-400 transition hover:bg-blue-500/20"
+                >
+                    <MessageSquareDot size={13} />
+                    Message
                 </button>
             </div>
         </div>

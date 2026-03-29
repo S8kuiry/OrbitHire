@@ -41,6 +41,11 @@ model User {
   postedJobs     Job[]         @relation("RecruiterJobs")
   applications   Application[] @relation("FresherApplications")
   notifications  Notification[]
+
+
+  recruiterConversations Conversation[] @relation("RecruiterConversations")
+  fresherConversations   Conversation[] @relation("FresherConversations")
+  sentMessages           Message[]      @relation("SentMessages")
 }
 
 model Job {
@@ -58,6 +63,9 @@ model Job {
   recruiterId  String
 
   applications Application[]
+
+  conversations  Conversation[]  // just a relation pointer, no DB column
+
 }
 
 model Application {
@@ -98,4 +106,31 @@ model GlobalWeights {
   threshold   Float
   sampleCount Int      @default(0)
   updatedAt   DateTime @updatedAt
+}
+
+
+model Conversation {
+  id            String    @id @default(cuid())
+  recruiterId   String
+  fresherId     String
+  jobId         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  recruiter     User      @relation("RecruiterConversations", fields: [recruiterId], references: [id])
+  fresher       User      @relation("FresherConversations", fields: [fresherId], references: [id])
+  job           Job?      @relation(fields: [jobId], references: [id])
+  messages      Message[]
+}
+
+model Message {
+  id              String       @id @default(cuid())
+  conversationId  String
+  senderId        String
+  content         String
+  isRead          Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender          User         @relation("SentMessages", fields: [senderId], references: [id])
 }

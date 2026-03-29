@@ -7,7 +7,8 @@ import { SignOutButton } from "@clerk/nextjs"
 import {
   Rocket, LayoutDashboard, Bell, LogOut,
   ChevronLeft, ChevronRight, Briefcase,
-  FileText, Menu, X
+  FileText, Menu, X,
+  MessageSquareDot
 } from "lucide-react"
 
 type Props = {
@@ -23,20 +24,26 @@ const fresherLinks = [
   { href: "/dashboard/fresher", label: "Explore Jobs", icon: Rocket, key: "explore" },
   { href: "/dashboard/fresher/applications", label: "My Applications", icon: FileText, key: "applications" },
   { href: "/dashboard/fresher/notifications", label: "Notifications", icon: Bell, key: "notifications" },
+  { href: "/dashboard/fresher/messages", label: "Messages", icon: MessageSquareDot, key: "messages" },
+
 ]
 
 const recruiterLinks = [
   { href: "/dashboard/recruiter", label: "Dashboard", icon: LayoutDashboard, key: "dashboard" },
   { href: "/dashboard/recruiter/notifications", label: "Notifications", icon: Bell, key: "notifications" },
+  { href: "/dashboard/recruiter/messages", label: "Messages", icon: MessageSquareDot, key: "messages" },
+
 ]
 
 export default function Sidebar({ role, user }: Props) {
   const prevCountRef = useRef(0)
-
+  const [unreadMessages, setUnreadMessages] = useState(0)
+  const prevMsgCountRef = useRef(0)
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
+  
 
   const links = role === "RECRUITER" ? recruiterLinks : fresherLinks
 
@@ -63,7 +70,7 @@ export default function Sidebar({ role, user }: Props) {
     }
 
     fetchCount()
-    const interval = setInterval(fetchCount, 30000)
+    const interval = setInterval(fetchCount, 8000)
     return () => clearInterval(interval)
   }, [])
 
@@ -77,6 +84,45 @@ export default function Sidebar({ role, user }: Props) {
       setUnreadCount(0)
     }
   }, [pathname])
+
+
+
+  // fetch unread messages
+  useEffect(() => {
+    async function fetchMsgCount() {
+      try {
+        const res = await fetch("/api/messages/unread-count")
+        const data = await res.json()
+
+
+        if (data.count > prevMsgCountRef.current) {
+          const audio = new Audio("/notification.mp3")
+          audio.volume = 0.4
+          audio.play().catch(() => { })
+        }
+
+        prevMsgCountRef.current = data.count
+        setUnreadMessages(data.count)
+
+      } catch (error) {
+        console.error(error)
+
+
+      }
+    }
+
+    fetchMsgCount()
+    const interval = setInterval(fetchMsgCount, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Reset when on messages page
+useEffect(() => {
+  const isMessagesPage = pathname.includes("/messages")
+  if (isMessagesPage) setUnreadMessages(0)
+}, [pathname])
+
+
 
   return (
     <>
@@ -135,6 +181,8 @@ export default function Sidebar({ role, user }: Props) {
             const isActive = pathname === href
             const isNotification = key === "notifications"
             const showBadge = isNotification && unreadCount > 0
+            const isMessages = key === "messages"
+const showMessageBadge = isMessages && unreadMessages > 0
 
             return (
               <Link
@@ -142,8 +190,8 @@ export default function Sidebar({ role, user }: Props) {
                 href={href}
                 onClick={() => setMobileOpen(false)}
                 className={`${collapsed ? "w-[80%] justify-center" : "justify-start"} relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium transition-all ${isActive
-                    ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
-                    : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
+                  ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
+                  : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
                   }`}
               >
                 {/* Icon with badge */}
@@ -154,6 +202,11 @@ export default function Sidebar({ role, user }: Props) {
                       {unreadCount > 9 ? "9+" : unreadCount}
                     </span>
                   )}
+                  {showMessageBadge && (
+  <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+    {unreadMessages > 9 ? "9+" : unreadMessages}
+  </span>
+)}
                 </div>
                 {!collapsed && <span>{label}</span>}
               </Link>

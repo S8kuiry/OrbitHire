@@ -9,7 +9,7 @@ export default function NotificationItem({ notif, time }: { notif: any, time: st
 
   const handleNotificationDelete = async (notId: string) => {
     try {
-      if (!confirm("Are you sure you want to delete this notification?")) return
+      // if (!confirm("Are you sure you want to delete this notification?")) return
       const res = await fetch(`/api/notifications/${notId}`, { method: "DELETE" })
       if (res.ok) {
         toast.success("Notification Deleted")

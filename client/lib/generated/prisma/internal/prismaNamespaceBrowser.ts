@@ -55,7 +55,10 @@ export const ModelName = {
   Job: 'Job',
   Application: 'Application',
   Notification: 'Notification',
-  FederatedUpdate: 'FederatedUpdate'
+  FederatedUpdate: 'FederatedUpdate',
+  GlobalWeights: 'GlobalWeights',
+  Conversation: 'Conversation',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -136,6 +139,41 @@ export const FederatedUpdateScalarFieldEnum = {
 } as const
 
 export type FederatedUpdateScalarFieldEnum = (typeof FederatedUpdateScalarFieldEnum)[keyof typeof FederatedUpdateScalarFieldEnum]
+
+
+export const GlobalWeightsScalarFieldEnum = {
+  id: 'id',
+  jobCategory: 'jobCategory',
+  threshold: 'threshold',
+  sampleCount: 'sampleCount',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GlobalWeightsScalarFieldEnum = (typeof GlobalWeightsScalarFieldEnum)[keyof typeof GlobalWeightsScalarFieldEnum]
+
+
+export const ConversationScalarFieldEnum = {
+  id: 'id',
+  recruiterId: 'recruiterId',
+  fresherId: 'fresherId',
+  jobId: 'jobId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConversationScalarFieldEnum = (typeof ConversationScalarFieldEnum)[keyof typeof ConversationScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  content: 'content',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const SortOrder = {

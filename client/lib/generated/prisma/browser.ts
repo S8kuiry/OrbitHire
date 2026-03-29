@@ -42,3 +42,18 @@ export type Notification = Prisma.NotificationModel
  * 
  */
 export type FederatedUpdate = Prisma.FederatedUpdateModel
+/**
+ * Model GlobalWeights
+ * 
+ */
+export type GlobalWeights = Prisma.GlobalWeightsModel
+/**
+ * Model Conversation
+ * 
+ */
+export type Conversation = Prisma.ConversationModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

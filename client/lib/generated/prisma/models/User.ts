@@ -193,6 +193,9 @@ export type UserWhereInput = {
   postedJobs?: Prisma.JobListRelationFilter
   applications?: Prisma.ApplicationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  recruiterConversations?: Prisma.ConversationListRelationFilter
+  fresherConversations?: Prisma.ConversationListRelationFilter
+  sentMessages?: Prisma.MessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -205,6 +208,9 @@ export type UserOrderByWithRelationInput = {
   postedJobs?: Prisma.JobOrderByRelationAggregateInput
   applications?: Prisma.ApplicationOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  recruiterConversations?: Prisma.ConversationOrderByRelationAggregateInput
+  fresherConversations?: Prisma.ConversationOrderByRelationAggregateInput
+  sentMessages?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -220,6 +226,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   postedJobs?: Prisma.JobListRelationFilter
   applications?: Prisma.ApplicationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  recruiterConversations?: Prisma.ConversationListRelationFilter
+  fresherConversations?: Prisma.ConversationListRelationFilter
+  sentMessages?: Prisma.MessageListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -256,6 +265,9 @@ export type UserCreateInput = {
   postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -268,6 +280,9 @@ export type UserUncheckedCreateInput = {
   postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserUpdateInput = {
@@ -280,6 +295,9 @@ export type UserUpdateInput = {
   postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -292,6 +310,9 @@ export type UserUncheckedUpdateInput = {
   postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -411,6 +432,48 @@ export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type UserCreateNestedOneWithoutRecruiterConversationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecruiterConversationsInput, Prisma.UserUncheckedCreateWithoutRecruiterConversationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecruiterConversationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutFresherConversationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFresherConversationsInput, Prisma.UserUncheckedCreateWithoutFresherConversationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFresherConversationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRecruiterConversationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecruiterConversationsInput, Prisma.UserUncheckedCreateWithoutRecruiterConversationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecruiterConversationsInput
+  upsert?: Prisma.UserUpsertWithoutRecruiterConversationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecruiterConversationsInput, Prisma.UserUpdateWithoutRecruiterConversationsInput>, Prisma.UserUncheckedUpdateWithoutRecruiterConversationsInput>
+}
+
+export type UserUpdateOneRequiredWithoutFresherConversationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFresherConversationsInput, Prisma.UserUncheckedCreateWithoutFresherConversationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFresherConversationsInput
+  upsert?: Prisma.UserUpsertWithoutFresherConversationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFresherConversationsInput, Prisma.UserUpdateWithoutFresherConversationsInput>, Prisma.UserUncheckedUpdateWithoutFresherConversationsInput>
+}
+
+export type UserCreateNestedOneWithoutSentMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSentMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMessagesInput
+  upsert?: Prisma.UserUpsertWithoutSentMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentMessagesInput, Prisma.UserUpdateWithoutSentMessagesInput>, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+}
+
 export type UserCreateWithoutPostedJobsInput = {
   id?: string
   email: string
@@ -420,6 +483,9 @@ export type UserCreateWithoutPostedJobsInput = {
   createdAt?: Date | string
   applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutPostedJobsInput = {
@@ -431,6 +497,9 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   createdAt?: Date | string
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutPostedJobsInput = {
@@ -458,6 +527,9 @@ export type UserUpdateWithoutPostedJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostedJobsInput = {
@@ -469,6 +541,9 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -480,6 +555,9 @@ export type UserCreateWithoutApplicationsInput = {
   createdAt?: Date | string
   postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -491,6 +569,9 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   createdAt?: Date | string
   postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -518,6 +599,9 @@ export type UserUpdateWithoutApplicationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -529,6 +613,9 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -540,6 +627,9 @@ export type UserCreateWithoutNotificationsInput = {
   createdAt?: Date | string
   postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -551,6 +641,9 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   createdAt?: Date | string
   postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -578,6 +671,9 @@ export type UserUpdateWithoutNotificationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -589,6 +685,225 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutRecruiterConversationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutRecruiterConversationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutRecruiterConversationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecruiterConversationsInput, Prisma.UserUncheckedCreateWithoutRecruiterConversationsInput>
+}
+
+export type UserCreateWithoutFresherConversationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutFresherConversationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutFresherConversationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFresherConversationsInput, Prisma.UserUncheckedCreateWithoutFresherConversationsInput>
+}
+
+export type UserUpsertWithoutRecruiterConversationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRecruiterConversationsInput, Prisma.UserUncheckedUpdateWithoutRecruiterConversationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecruiterConversationsInput, Prisma.UserUncheckedCreateWithoutRecruiterConversationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRecruiterConversationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRecruiterConversationsInput, Prisma.UserUncheckedUpdateWithoutRecruiterConversationsInput>
+}
+
+export type UserUpdateWithoutRecruiterConversationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRecruiterConversationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutFresherConversationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFresherConversationsInput, Prisma.UserUncheckedUpdateWithoutFresherConversationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFresherConversationsInput, Prisma.UserUncheckedCreateWithoutFresherConversationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFresherConversationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFresherConversationsInput, Prisma.UserUncheckedUpdateWithoutFresherConversationsInput>
+}
+
+export type UserUpdateWithoutFresherConversationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFresherConversationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutSentMessagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationCreateNestedManyWithoutFresherInput
+}
+
+export type UserUncheckedCreateWithoutSentMessagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  avatar?: string | null
+  role?: $Enums.Role | null
+  createdAt?: Date | string
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutRecruiterInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutFresherInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  recruiterConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutRecruiterInput
+  fresherConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutFresherInput
+}
+
+export type UserCreateOrConnectWithoutSentMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+}
+
+export type UserUpsertWithoutSentMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentMessagesInput, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMessagesInput, Prisma.UserUncheckedCreateWithoutSentMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentMessagesInput, Prisma.UserUncheckedUpdateWithoutSentMessagesInput>
+}
+
+export type UserUpdateWithoutSentMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUpdateManyWithoutFresherNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutRecruiterNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutFresherNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  recruiterConversations?: Prisma.ConversationUncheckedUpdateManyWithoutRecruiterNestedInput
+  fresherConversations?: Prisma.ConversationUncheckedUpdateManyWithoutFresherNestedInput
 }
 
 
@@ -600,12 +915,18 @@ export type UserCountOutputType = {
   postedJobs: number
   applications: number
   notifications: number
+  recruiterConversations: number
+  fresherConversations: number
+  sentMessages: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   postedJobs?: boolean | UserCountOutputTypeCountPostedJobsArgs
   applications?: boolean | UserCountOutputTypeCountApplicationsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  recruiterConversations?: boolean | UserCountOutputTypeCountRecruiterConversationsArgs
+  fresherConversations?: boolean | UserCountOutputTypeCountFresherConversationsArgs
+  sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
 }
 
 /**
@@ -639,6 +960,27 @@ export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.NotificationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRecruiterConversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFresherConversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -650,6 +992,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   postedJobs?: boolean | Prisma.User$postedJobsArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  recruiterConversations?: boolean | Prisma.User$recruiterConversationsArgs<ExtArgs>
+  fresherConversations?: boolean | Prisma.User$fresherConversationsArgs<ExtArgs>
+  sentMessages?: boolean | Prisma.User$sentMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -685,6 +1030,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   postedJobs?: boolean | Prisma.User$postedJobsArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  recruiterConversations?: boolean | Prisma.User$recruiterConversationsArgs<ExtArgs>
+  fresherConversations?: boolean | Prisma.User$fresherConversationsArgs<ExtArgs>
+  sentMessages?: boolean | Prisma.User$sentMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -696,6 +1044,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     postedJobs: Prisma.$JobPayload<ExtArgs>[]
     applications: Prisma.$ApplicationPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    recruiterConversations: Prisma.$ConversationPayload<ExtArgs>[]
+    fresherConversations: Prisma.$ConversationPayload<ExtArgs>[]
+    sentMessages: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1101,6 +1452,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   postedJobs<T extends Prisma.User$postedJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applications<T extends Prisma.User$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recruiterConversations<T extends Prisma.User$recruiterConversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recruiterConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fresherConversations<T extends Prisma.User$fresherConversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fresherConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentMessages<T extends Prisma.User$sentMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1593,6 +1947,78 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.recruiterConversations
+ */
+export type User$recruiterConversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Conversation
+   */
+  select?: Prisma.ConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Conversation
+   */
+  omit?: Prisma.ConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConversationInclude<ExtArgs> | null
+  where?: Prisma.ConversationWhereInput
+  orderBy?: Prisma.ConversationOrderByWithRelationInput | Prisma.ConversationOrderByWithRelationInput[]
+  cursor?: Prisma.ConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConversationScalarFieldEnum | Prisma.ConversationScalarFieldEnum[]
+}
+
+/**
+ * User.fresherConversations
+ */
+export type User$fresherConversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Conversation
+   */
+  select?: Prisma.ConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Conversation
+   */
+  omit?: Prisma.ConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConversationInclude<ExtArgs> | null
+  where?: Prisma.ConversationWhereInput
+  orderBy?: Prisma.ConversationOrderByWithRelationInput | Prisma.ConversationOrderByWithRelationInput[]
+  cursor?: Prisma.ConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConversationScalarFieldEnum | Prisma.ConversationScalarFieldEnum[]
+}
+
+/**
+ * User.sentMessages
+ */
+export type User$sentMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**
