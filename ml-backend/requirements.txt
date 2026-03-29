@@ -8,3 +8,5 @@ httpx
 pdfplumber
 psycopg2-binary
 prisma
+pdfplumber
+python-multipart
