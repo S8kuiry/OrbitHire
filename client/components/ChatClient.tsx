@@ -144,13 +144,12 @@ useEffect(() => {
       body: JSON.stringify({ content: input.trim() }),
     })
     if (res.ok) {
-      const msg = await res.json()
-      setMessages(prev => [...prev, msg])
       setInput("")
+      await fetchMessages()  // fetch instead of optimistic add
     }
     setSending(false)
   }
-
+  
   // Deletes all messages but keeps the conversation record intact
   async function clearMessages() {
     if (!confirm("Clear all messages? The conversation will remain but all messages will be deleted.")) return
