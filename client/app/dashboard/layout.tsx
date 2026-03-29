@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma"
 import Sidebar from "@/components/Sidebar"
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background"
 import { Toaster } from "react-hot-toast"
+// app/dashboard/layout.tsx — add at the top
+export const dynamic = 'force-dynamic'
 
 
 export default async function DashboardLayout({ children, }: { children: React.ReactNode }) {
