@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { MessageSquare, Trash2, Eye, Loader2 } from "lucide-react"
+import Link from "next/link"
+
 
 type Conversation = {
   id: string
@@ -101,16 +103,15 @@ export default function MessagesClient({ role, currentUserId }: { role: string; 
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => router.push(
-                        role === "RECRUITER"
-                          ? `/dashboard/recruiter/messages/${conv.id}`
-                          : `/dashboard/fresher/messages/${conv.id}`
-                      )}
+                    <Link
+                      href={role === "RECRUITER"
+                        ? `/dashboard/recruiter/messages/${conv.id}`
+                        : `/dashboard/fresher/messages/${conv.id}`
+                      }
                       className="flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-700 hover:text-white transition"
                     >
                       <Eye size={14} /> View
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleDelete(conv.id)}
                       disabled={deletingId === conv.id}

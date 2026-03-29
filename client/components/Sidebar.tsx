@@ -70,7 +70,7 @@ export default function Sidebar({ role, user }: Props) {
     }
 
     fetchCount()
-    const interval = setInterval(fetchCount, 8000)
+    const interval = setInterval(fetchCount, 30000)
     return () => clearInterval(interval)
   }, [])
 
