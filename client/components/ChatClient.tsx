@@ -217,7 +217,6 @@ useEffect(() => {
             ? <Loader2 size={13} className="animate-spin" />
             : <span className="flex items-center justify-center gap-2"><p>Clear Chat </p> <Trash2 size={13} /></span>
           }
-          <span className="hidden sm:inline">Clear chat</span>
         </button>
       </div>
 
